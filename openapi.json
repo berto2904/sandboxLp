@@ -1,267 +1,1765 @@
 {
   "swagger": "2.0",
-  "schemes": [
-    "http",
-    "https"
-  ],
-  "host": "example.com",
-  "basePath": "/api/v1",
   "info": {
-    "description": "This is an **example** API to demonstrate features of OpenAPI specification\n# Introduction\nThis specification is intended to to be a good starting point for describing your API in \n[OpenAPI/Swagger format](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md).\nIt also demonstrates features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo) tool and \n[ReDoc](https://github.com/Rebilly/ReDoc) documentation engine. So beyond the standard OpenAPI syntax we use a few \n[vendor extensions](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md).\n\n# OpenAPI Specification\nThe goal of The OpenAPI Specification is to define a standard, language-agnostic interface to REST APIs which\nallows both humans and computers to discover and understand the capabilities of the service without access to source\ncode, documentation, or through network traffic inspection. When properly defined via OpenAPI, a consumer can \nunderstand and interact with the remote service with a minimal amount of implementation logic. Similar to what\ninterfaces have done for lower-level programming, OpenAPI removes the guesswork in calling the service.\n",
-    "version": "1.0.0",
-    "title": "Example.com",
-    "termsOfService": "https://example.com/terms/",
-    "contact": {
-      "email": "contact@example.com",
-      "url": "http://example.com/contact"
-    },
-    "license": {
-      "name": "Apache 2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-    },
+    "version": "v1",
+    "title": "WA_LP",
     "x-logo": {
-      "url": "https://apis.guru/openapi-template/logo.png"
+      "url": "https://www.localpayment.com/wp-content/uploads/2019/04/lp_logo_lineal.png",
+      "altText": "LocalPayment logo"
     }
   },
-  "externalDocs": {
-    "description": "Find out how to create Github repo for your OpenAPI spec.",
-    "url": "https://github.com/Rebilly/generator-openapi-repo"
-  },
-  "produces": [
-    "application/json",
-    "application/xml",
-    "text/csv"
+  "host": "localhost:6820",
+  "basePath": "/api",
+  "schemes": [
+    "http"
   ],
-  "consumes": [
-    "application/json",
-    "application/xml"
-  ],
-  "tags": [
-    {
-      "name": "Echo",
-      "description": "Example echo operations"
-    },
-    {
-      "name": "User",
-      "description": "Operations about user"
-    }
-  ],
-  "securityDefinitions": {
-    "main_auth": {
-      "type": "oauth2",
-      "authorizationUrl": "http://example.com/api/oauth/dialog",
-      "flow": "implicit",
-      "scopes": {
-        "read:users": "read users info",
-        "write:users": "modify or remove users"
-      }
-    },
-    "api_key": {
-      "type": "apiKey",
-      "in": "header",
-      "name": "api_key"
-    },
-    "basic_auth": {
-      "type": "basic"
-    }
-  },
   "paths": {
-    "/echo": {
+    "/v2/tokens": {
       "post": {
         "tags": [
-          "Echo"
+          "Authentication"
         ],
-        "summary": "Echo test",
-        "description": "Receive the exact message you've sent",
-        "operationId": "echo",
+        "summary": "Tokens",
+        "operationId": "Authentication_Token",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
         "parameters": [
           {
-            "name": "message",
-            "in": "body",
-            "description": "Echo payload",
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content Type",
             "required": true,
-            "schema": {
-              "type": "string",
-              "example": "Hello world!"
-            }
-          }
-        ],
-        "security": [
+            "type": "string",
+            "default": "application/json"
+          },
           {
-            "api_key": []
+            "name": "customer_id",
+            "in": "header",
+            "description": "Id of costumer",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "api_key",
+            "in": "header",
+            "description": "api key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "app",
+            "in": "header",
+            "description": "app",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "examples": {
-              "application/json": "Hello world!"
-            },
             "schema": {
-              "type": "string"
-            },
-            "headers": {
-              "X-Rate-Limit": {
-                "type": "integer",
-                "format": "int32",
-                "description": "calls per hour allowed by the user"
-              },
-              "X-Expires-After": {
-                "type": "string",
-                "format": "date-time",
-                "description": "date in UTC when token expires"
+              "$ref": "#/definitions/SharedModel.Models.Security.Token"
+            }
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/SharedModel.Models.Database.Security.Authentication.Account"
+            }
+          },
+          "500": {
+            "description": "InternalServerError"
+          }
+        }
+      }
+    },
+    "/v2/payouts/payout": {
+      "post": {
+        "tags": [
+          "PayOut"
+        ],
+        "summary": "Create",
+        "operationId": "PayOut_Payouts",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content Type",
+            "required": true,
+            "type": "string",
+            "default": "application/json"
+          },
+          {
+            "name": "customer_id",
+            "in": "header",
+            "description": "Customer id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "countryCode",
+            "in": "header",
+            "description": "Country code",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "ARG",
+              "COL"
+            ]
+          },
+          {
+            "in": "body",
+            "name": "[]",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/reqCreate"
               }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/resCreate"
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "schema": {
+              "$ref": "#/definitions/SharedModel.Models.General.GeneralErrorModel"
+            }
+          },
+          "500": {
+            "description": "InternalServerError",
+            "schema": {
+              "$ref": "#/definitions/SharedModel.Models.General.GeneralErrorModel"
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "-CURL ARG",
+            "source": "curl --location --request POST 'https://live.localpayment.com/qa/v2/payouts/payout' \\\n--header 'Content-Type: application/json' \\--header 'customer_id: 000001500001' \\\n--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjAwMDAwMTUwMDAwMSIsIm5iZiI6MTU3OTEwMjQxMywiZXhwIjoxNTc5MTA0MjEzLCJpYXQiOjE1NzkxMDI0MTMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NjgyMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NjgyMCJ9.wPb-x9yGCvcC49z8NOH9MmKUlmW3iVHCRF-oVI25-QI' \\\n--header 'countryCode: ARG' \\\n--data-raw '[\n{\n\t\"beneficiary_cuit\":\"20205803980\",\n\t\"beneficiary_name\":\"Pereyra Carlos\",\n\t\"bank_account_type\":\"A\",\n\t\"bank_cbu\":\"0150501601000245488475\",\n\t\"amount\":567819,\n\t\"beneficiary_softd\":null,\n\t\"site_transaction_id\":169872563,\n\t\"concept_code\":0,\n\t\"payment_type\":null,\n\t\"currency\":\"ARS\",\n\t\"payout_date\":\"20200115\",\n\t\"address\":null,\n\t\"annotation\":null,\n\t\"birth_date\":null,\n\t\"city\":null,\n\t\"country\":null,\n\t\"email\":null,\n\t\"subclient_code\":\"Airbnb\"\n}\n]'\n"
+          },
+          {
+            "lang": "-CURL COL",
+            "source": "curl --location --request POST 'https://live.localpayment.com/qa/v2/payouts/payout' \\\n--header 'Content-Type: application/json' \\\n--header 'customer_id: 000001500001' \\\n--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjAwMDAwMTUwMDAwMSIsIm5iZiI6MTU3ODkwOTU1NiwiZXhwIjoxNTc4OTExMzU2LCJpYXQiOjE1Nzg5MDk1NTYsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NjgyMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NjgyMCJ9.hPOGqC2_8xzeKtXCfGdtO_l_tsfFIA_8fDalRhKyypc' \\\n--header 'countryCode: COL' \\\n--data-raw '[\n  {\n      \"amount\":26880000,\n      \"type_of_id\":\"1\",\n      \"id\":\"54544241243\",\n      \"beneficiary_name\":\"Erica Paola Garcia\",\n      \"account_type\":\"37\",\n      \"bank_code\":\"1062\",\n      \"beneficiary_account_number\":\"111660011171\",\n      \"beneficiary_email\":\"\",\n      \"site_transaction_id\":\"8889157\",\n      \"concept_code\":\"AB\",\n      \"payout_date\":\"20200113\",\n      \"currency\":\"COP\",\n      \"address\":\"francia 55\",\n      \"city\":\"BOGOTA\",\n      \"country\":\"COLOMBIA\",\n      \"subclient_code\":\"Airbnb\"\n   }\n]'\n"
+          }
+        ]
+      }
+    },
+    "/v2/payouts/update": {
+      "put": {
+        "tags": [
+          "PayOut"
+        ],
+        "summary": "Update",
+        "operationId": "PayOut_Payout_update",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content Type",
+            "required": true,
+            "type": "string",
+            "default": "application/json"
+          },
+          {
+            "name": "customer_id",
+            "in": "header",
+            "description": "Customer id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "countryCode",
+            "in": "header",
+            "description": "Country Code",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "ARG",
+              "COL"
+            ]
+          },
+          {
+            "name": "TransactionMechanism",
+            "in": "header",
+            "description": "Transaction Mechanism",
+            "required": true,
+            "type": "bool"
+          },
+          {
+            "in": "body",
+            "name": "[]",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/reqUpdate"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/resUpdate"
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "schema": {
+              "$ref": "#/definitions/SharedModel.Models.General.GeneralErrorModel"
+            }
+          },
+          "500": {
+            "description": "InternalServerError",
+            "schema": {
+              "$ref": "#/definitions/SharedModel.Models.General.GeneralErrorModel"
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "-CURL ARG",
+            "source": "curl --location --request PUT 'https://live.localpayment.com/qa/v2/payouts/update' \\\n--header 'Content-Type: application/json' \\\n--header 'customer_id: 000001500001' \\\n--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjAwMDAwMTUwMDAwMSIsIm5iZiI6MTU3ODA1MzU2MywiZXhwIjoxNTc4MDU1MzYzLCJpYXQiOjE1NzgwNTM1NjMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NjgyMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NjgyMCJ9.SXVnIfG5jjhdG1IKZHR7Hn7CooSsSNxd-Or9A1iYxoY' \\\n--header 'countryCode: COL' \\\n--data-raw '[\n  {\n      \"amount\":26885000,\n      \"type_of_id\":\"1\",\n      \"id\":\"54544241243\",\n      \"beneficiary_name\":\"Erica Paola Garcia\",\n      \"account_type\":\"37\",\n      \"bank_code\":\"1062\",\n      \"beneficiary_account_number\":\"111660011171\",\n      \"beneficiary_email\":\"\",\n      \"site_transaction_id\":\"8889150\",\n      \"payout_date\":\"20200103\",\n      \"currency\":\"COP\",\n      \"address\":\"francia 55\",\n      \"city\":\"BOGOTA\",\n      \"country\":\"COLOMBIA\",\n      \"subclient_code\":\"Airbnb\"\n   }\n]'\n"
+          },
+          {
+            "lang": "-CURL COL",
+            "source": "curl --location --request PUT 'https://live.localpayment.com/qa/v2/payouts/update' \\\n--header 'Content-Type: application/json' \\\n--header 'customer_id: 000001500001' \\\n--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjAwMDAwMTUwMDAwMSIsIm5iZiI6MTU3ODA1MzU2MywiZXhwIjoxNTc4MDU1MzYzLCJpYXQiOjE1NzgwNTM1NjMsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NjgyMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NjgyMCJ9.SXVnIfG5jjhdG1IKZHR7Hn7CooSsSNxd-Or9A1iYxoY' \\\n--header 'countryCode: COL' \\\n--data-raw '[\n  {\n      \"amount\":26885000,\n      \"type_of_id\":\"1\",\n      \"id\":\"54544241243\",\n      \"beneficiary_name\":\"Erica Paola Garcia\",\n      \"account_type\":\"37\",\n      \"bank_code\":\"1062\",\n      \"beneficiary_account_number\":\"111660011171\",\n      \"beneficiary_email\":\"\",\n      \"site_transaction_id\":\"8889150\",\n      \"payout_date\":\"20200103\",\n      \"currency\":\"COP\",\n      \"address\":\"francia 55\",\n      \"city\":\"BOGOTA\",\n      \"country\":\"COLOMBIA\",\n      \"subclient_code\":\"Airbnb\"\n   }\n]'\n"
+          }
+        ]
+      }
+    },
+    "/v2/payouts/cancel": {
+      "delete": {
+        "tags": [
+          "PayOut"
+        ],
+        "summary": "Cancel",
+        "operationId": "PayOut_Payout_cancel",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content Type",
+            "required": true,
+            "type": "string",
+            "default": "application/json"
+          },
+          {
+            "name": "customer_id",
+            "in": "header",
+            "description": "Customer id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "TransactionMechanism",
+            "in": "header",
+            "description": "Transaction Mechanism",
+            "required": true,
+            "type": "bool"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SharedModel.Models.Services.Banks.Galicia.PayOut.Delete.Response"
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "schema": {
+              "$ref": "#/definitions/SharedModel.Models.General.GeneralErrorModel"
+            }
+          },
+          "500": {
+            "description": "InternalServerError",
+            "schema": {
+              "$ref": "#/definitions/SharedModel.Models.General.GeneralErrorModel"
             }
           }
         }
       }
     },
-    "/users/{username}": {
-      "parameters": [
-        {
-          "name": "pretty_print",
-          "in": "query",
-          "description": "Pretty print response",
-          "type": "boolean"
-        }
-      ],
+    "/v2/payouts/list": {
       "get": {
         "tags": [
-          "User"
+          "PayOut"
         ],
-        "summary": "Get user by user name",
-        "description": "Some description of the operation. \nYou can use `markdown` here.\n",
-        "operationId": "getUserByName",
+        "summary": "List",
+        "operationId": "PayOut_List_payouts",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
         "parameters": [
           {
-            "name": "username",
-            "in": "path",
-            "description": "The name that needs to be fetched",
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content Type",
+            "required": true,
+            "type": "string",
+            "default": "application/json"
+          },
+          {
+            "name": "customer_id",
+            "in": "header",
+            "description": "Customer id",
             "required": true,
             "type": "string"
           },
           {
-            "name": "with_email",
-            "in": "query",
-            "description": "Filter users without email",
-            "type": "boolean"
-          }
-        ],
-        "security": [
-          {
-            "main_auth": [
-              "read:users"
+            "name": "countryCode",
+            "in": "header",
+            "description": "Country Code",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "ARG",
+              "COL"
             ]
-          },
-          {
-            "api_key": []
           }
-        ],
-        "produces": [
-          "application/json"
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "schema": {
-              "$ref": "#/definitions/User"
-            },
-            "examples": {
-              "application/json": {
-                "username": "user1",
-                "email": "user@example.com"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SharedModel.Models.Services.Banks.Galicia.PayOut.LotBatch"
               }
             }
           },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "User not found"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "User"
-        ],
-        "summary": "Updated user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "updateUser",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "The name that needs to be updated",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Updated user object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "security": [
-          {
-            "main_auth": [
-              "write:users"
-            ]
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
           "400": {
-            "description": "Invalid user supplied"
-          },
-          "404": {
-            "description": "User not found"
+            "description": "BadRequest",
+            "schema": {
+              "$ref": "#/definitions/SharedModel.Models.General.GeneralErrorModel"
+            }
           }
         }
       }
     }
   },
   "definitions": {
-    "Email": {
-      "description": "User email address",
-      "type": "string",
-      "format": "email",
-      "example": "john.smith@example.com"
-    },
-    "User": {
+    "SharedModel.Models.Security.Token": {
       "type": "object",
       "properties": {
-        "username": {
-          "description": "User supplied username",
-          "type": "string",
-          "minLength": 4,
-          "example": "John78"
-        },
-        "firstName": {
-          "description": "User first name",
-          "type": "string",
-          "minLength": 1,
-          "example": "John"
-        },
-        "lastName": {
-          "description": "User last name",
-          "type": "string",
-          "minLength": 1,
-          "example": "Smith"
-        },
-        "email": {
-          "$ref": "#/definitions/Email"
+        "token_id": {
+          "type": "string"
         }
       }
+    },
+    "SharedModel.Models.Database.Security.Authentication.Account": {
+      "type": "object",
+      "properties": {
+        "SecretKey": {
+          "type": "string"
+        },
+        "ValidationResult": {
+          "$ref": "#/definitions/SharedModel.Models.Database.General.Result.Validation"
+        },
+        "Login": {
+          "$ref": "#/definitions/SharedModel.Models.Security.AccountModel.Login"
+        }
+      }
+    },
+    "SharedModel.Models.Database.General.Result.Validation": {
+      "type": "object",
+      "properties": {
+        "ValidationStatus": {
+          "type": "boolean"
+        },
+        "ValidationMessage": {
+          "type": "string"
+        }
+      }
+    },
+    "SharedModel.Models.Security.AccountModel.Login": {
+      "type": "object",
+      "properties": {
+        "ClientID": {
+          "type": "string"
+        },
+        "Password": {
+          "type": "string"
+        },
+        "WebAcces": {
+          "type": "boolean"
+        }
+      }
+    },
+    "SharedModel.Models.Services.Colombia.Banks.Bancolombia.PayOutColombia.Create.Response": {
+      "required": [
+        "type_of_id",
+        "id",
+        "beneficiary_name",
+        "account_type",
+        "bank_code",
+        "beneficiary_account_number",
+        "site_transaction_id",
+        "amount",
+        "currency"
+      ],
+      "type": "object",
+      "properties": {
+        "transaction_id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "payout_id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "status": {
+          "type": "string"
+        },
+        "type_of_id": {
+          "maxLength": 1,
+          "minLength": 1,
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 15,
+          "minLength": 1,
+          "type": "string"
+        },
+        "beneficiary_name": {
+          "maxLength": 30,
+          "minLength": 1,
+          "type": "string"
+        },
+        "account_type": {
+          "maxLength": 2,
+          "minLength": 2,
+          "type": "string"
+        },
+        "bank_code": {
+          "type": "string"
+        },
+        "beneficiary_account_number": {
+          "maxLength": 20,
+          "minLength": 4,
+          "type": "string"
+        },
+        "beneficiary_email": {
+          "type": "string"
+        },
+        "site_transaction_id": {
+          "maxLength": 22,
+          "minLength": 0,
+          "type": "string"
+        },
+        "amount": {
+          "format": "int64",
+          "minimum": 100,
+          "type": "integer"
+        },
+        "payout_date": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "address": {
+          "maxLength": 100,
+          "minLength": 0,
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "subclient_code": {
+          "type": "string"
+        },
+        "ErrorRow": {
+          "$ref": "#/definitions/SharedModel.Models.General.ErrorModel.Error"
+        }
+      }
+    },
+    "SharedModel.Models.General.ErrorModel.Error": {
+      "type": "object",
+      "properties": {
+        "Errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SharedModel.Models.General.ErrorModel.ValidationErrorGroup"
+          }
+        },
+        "HasError": {
+          "type": "boolean",
+          "readOnly": true
+        }
+      }
+    },
+    "SharedModel.Models.General.ErrorModel.ValidationErrorGroup": {
+      "type": "object",
+      "properties": {
+        "Key": {
+          "type": "string"
+        },
+        "Messages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "CodeTypeError": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SharedModel.Models.Services.Banks.Galicia.PayOut.Create.Request": {
+      "required": [
+        "beneficiary_cuit",
+        "beneficiary_name",
+        "bank_account_type",
+        "bank_cbu",
+        "amount",
+        "site_transaction_id",
+        "currency",
+        "subclient_code"
+      ],
+      "type": "object",
+      "properties": {
+        "beneficiary_cuit": {
+          "maxLength": 11,
+          "minLength": 11,
+          "type": "string"
+        },
+        "beneficiary_name": {
+          "maxLength": 60,
+          "minLength": 1,
+          "type": "string"
+        },
+        "bank_account_type": {
+          "maxLength": 1,
+          "minLength": 1,
+          "type": "string"
+        },
+        "bank_cbu": {
+          "maxLength": 22,
+          "minLength": 22,
+          "type": "string"
+        },
+        "amount": {
+          "format": "int64",
+          "maximum": 100000000,
+          "minimum": 100,
+          "type": "integer"
+        },
+        "beneficiary_softd": {
+          "type": "string"
+        },
+        "site_transaction_id": {
+          "maxLength": 22,
+          "minLength": 0,
+          "type": "string"
+        },
+        "concept_code": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "payout_date": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "birth_date": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "annotation": {
+          "type": "string"
+        },
+        "subclient_code": {
+          "maxLength": 60,
+          "minLength": 3,
+          "type": "string"
+        },
+        "ErrorRow": {
+          "$ref": "#/definitions/SharedModel.Models.General.ErrorModel.Error"
+        }
+      }
+    },
+    "SharedModel.Models.General.GeneralErrorModel": {
+      "type": "object",
+      "properties": {
+        "Code": {
+          "type": "string"
+        },
+        "CodeDescription": {
+          "type": "string"
+        },
+        "Message": {
+          "type": "string"
+        }
+      }
+    },
+    "SharedModel.Models.Services.Banks.Galicia.PayOut.Update.Response": {
+      "required": [
+        "transaction_id",
+        "payout_id",
+        "beneficiary_cuit",
+        "beneficiary_name",
+        "bank_account_type",
+        "bank_cbu",
+        "amount",
+        "site_transaction_id",
+        "currency",
+        "subclient_code"
+      ],
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "withholding_tax": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "transaction_id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "payout_id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "beneficiary_cuit": {
+          "maxLength": 11,
+          "minLength": 11,
+          "type": "string"
+        },
+        "beneficiary_name": {
+          "maxLength": 60,
+          "minLength": 1,
+          "type": "string"
+        },
+        "bank_account_type": {
+          "maxLength": 1,
+          "minLength": 1,
+          "type": "string"
+        },
+        "bank_cbu": {
+          "maxLength": 22,
+          "minLength": 22,
+          "type": "string"
+        },
+        "amount": {
+          "format": "int64",
+          "maximum": 100000000,
+          "minimum": 100,
+          "type": "integer"
+        },
+        "beneficiary_softd": {
+          "type": "string"
+        },
+        "site_transaction_id": {
+          "maxLength": 22,
+          "minLength": 0,
+          "type": "string"
+        },
+        "concept_code": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "payout_date": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "birth_date": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "annotation": {
+          "type": "string"
+        },
+        "subclient_code": {
+          "maxLength": 60,
+          "minLength": 3,
+          "type": "string"
+        },
+        "ErrorRow": {
+          "$ref": "#/definitions/SharedModel.Models.General.ErrorModel.Error"
+        }
+      }
+    },
+    "SharedModel.Models.Services.Banks.Galicia.PayOut.Delete.Response": {
+      "required": [
+        "payout_id"
+      ],
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "transaction_id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "payout_id": {
+          "format": "int64",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "ErrorRow": {
+          "$ref": "#/definitions/SharedModel.Models.General.ErrorModel.Error"
+        }
+      }
+    },
+    "SharedModel.Models.Services.Banks.Galicia.PayOut.LotBatch": {
+      "type": "object",
+      "properties": {
+        "payout_id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "customer_name": {
+          "type": "string"
+        },
+        "transaction_type": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "process_date": {
+          "type": "string"
+        },
+        "gross_amount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "net_amount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "account_balance": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "transaction_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SharedModel.Models.Services.Banks.Galicia.PayOut.List.Response"
+          }
+        },
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "SharedModel.Models.Services.Banks.Galicia.PayOut.List.Response": {
+      "type": "object",
+      "properties": {
+        "transaction_id": {
+          "format": "int64",
+          "type": "integer"
+        },
+        "type_of_id": {
+          "type": "string"
+        },
+        "beneficiary_cuit": {
+          "type": "string"
+        },
+        "beneficiary_name": {
+          "type": "string"
+        },
+        "bank_account_type": {
+          "type": "string"
+        },
+        "bank_account": {
+          "type": "string"
+        },
+        "bank_code": {
+          "type": "string"
+        },
+        "bank_cbu": {
+          "type": "string"
+        },
+        "amount": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "accreditation_date": {
+          "type": "string"
+        },
+        "beneficiary_softd": {
+          "type": "string"
+        },
+        "site_transaction_id": {
+          "type": "string"
+        },
+        "concept_code": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "payment_type": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "withholding_tax": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "subclient_code": {
+          "type": "string"
+        }
+      }
+    },
+    "reqCreate": {
+      "discriminator": " ",
+      "properties": {
+        " ": {
+          "description": "Depends from \"countryCode\" header parameter",
+          "type": " "
+        }
+      }
+    },
+    "resCreate": {
+      "type": "object",
+      "discriminator": " ",
+      "properties": {
+        " ": {
+          "description": "Depends from \"countryCode\" header parameter",
+          "type": " "
+        }
+      }
+    },
+    "reqUpdate": {
+      "type": "object",
+      "discriminator": " ",
+      "properties": {
+        " ": {
+          "description": "Depends from \"countryCode\" header parameter",
+          "type": " "
+        }
+      }
+    },
+    "resUpdate": {
+      "type": "object",
+      "discriminator": " ",
+      "properties": {
+        " ": {
+          "description": "Depends from \"countryCode\" header parameter",
+          "type": "object"
+        }
+      }
+    },
+    "ARG(Create Request)": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/reqCreate"
+        },
+        {
+          "required": [
+            "beneficiary_cuit",
+            "beneficiary_name",
+            "bank_account_type",
+            "bank_cbu",
+            "amount",
+            "site_transaction_id",
+            "currency",
+            "subclient_code"
+          ],
+          "type": "object",
+          "properties": {
+            "beneficiary_cuit": {
+              "maxLength": 11,
+              "minLength": 11,
+              "type": "string"
+            },
+            "beneficiary_name": {
+              "maxLength": 60,
+              "minLength": 1,
+              "type": "string"
+            },
+            "bank_account_type": {
+              "maxLength": 1,
+              "minLength": 1,
+              "type": "string"
+            },
+            "bank_cbu": {
+              "maxLength": 22,
+              "minLength": 22,
+              "type": "string"
+            },
+            "amount": {
+              "format": "int64",
+              "maximum": 100000000,
+              "minimum": 100,
+              "type": "integer"
+            },
+            "beneficiary_softd": {
+              "type": "string"
+            },
+            "site_transaction_id": {
+              "maxLength": 22,
+              "minLength": 0,
+              "type": "string"
+            },
+            "concept_code": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "payment_type": {
+              "type": "string"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "payout_date": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "annotation": {
+              "type": "string"
+            },
+            "birth_date": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "subclient_code": {
+              "maxLength": 60,
+              "minLength": 3,
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "COL (Create Request)": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/reqCreate"
+        },
+        {
+          "required": [
+            "type_of_id",
+            "id",
+            "beneficiary_name",
+            "account_type",
+            "bank_code",
+            "beneficiary_account_number",
+            "site_transaction_id",
+            "amount",
+            "currency"
+          ],
+          "type": "object",
+          "properties": {
+            "amount": {
+              "format": "int64",
+              "minimum": 100,
+              "type": "integer"
+            },
+            "type_of_id": {
+              "maxLength": 1,
+              "minLength": 1,
+              "type": "string"
+            },
+            "id": {
+              "maxLength": 15,
+              "minLength": 1,
+              "type": "string"
+            },
+            "beneficiary_name": {
+              "maxLength": 30,
+              "minLength": 1,
+              "type": "string"
+            },
+            "account_type": {
+              "maxLength": 2,
+              "minLength": 2,
+              "type": "string"
+            },
+            "bank_code": {
+              "type": "string"
+            },
+            "beneficiary_account_number": {
+              "maxLength": 20,
+              "minLength": 4,
+              "type": "string"
+            },
+            "beneficiary_email": {
+              "type": "string"
+            },
+            "site_transaction_id": {
+              "maxLength": 22,
+              "minLength": 0,
+              "type": "string"
+            },
+            "concept_code": {
+              "type": "string"
+            },
+            "payout_date": {
+              "type": "string"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "address": {
+              "maxLength": 100,
+              "minLength": 0,
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "subclient_code": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "ARG (Payout Response)": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/resCreate"
+        },
+        {
+          "required": [
+            "beneficiary_cuit",
+            "beneficiary_name",
+            "bank_account_type",
+            "bank_cbu",
+            "amount",
+            "site_transaction_id",
+            "currency",
+            "subclient_code"
+          ],
+          "type": "object",
+          "properties": {
+            "transaction_id": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "payout_id": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "status": {
+              "type": "string"
+            },
+            "withholding_tax": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "beneficiary_cuit": {
+              "maxLength": 11,
+              "minLength": 11,
+              "type": "string"
+            },
+            "beneficiary_name": {
+              "maxLength": 60,
+              "minLength": 1,
+              "type": "string"
+            },
+            "bank_account_type": {
+              "maxLength": 1,
+              "minLength": 1,
+              "type": "string"
+            },
+            "bank_cbu": {
+              "maxLength": 22,
+              "minLength": 22,
+              "type": "string"
+            },
+            "amount": {
+              "format": "int64",
+              "maximum": 100000000,
+              "minimum": 100,
+              "type": "integer"
+            },
+            "beneficiary_softd": {
+              "type": "string"
+            },
+            "site_transaction_id": {
+              "maxLength": 22,
+              "minLength": 0,
+              "type": "string"
+            },
+            "concept_code": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "payout_date": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "birth_date": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "annotation": {
+              "type": "string"
+            },
+            "subclient_code": {
+              "maxLength": 60,
+              "minLength": 3,
+              "type": "string"
+            },
+            "ErrorRow": {
+              "$ref": "#/definitions/SharedModel.Models.General.ErrorModel.Error"
+            }
+          }
+        }
+      ]
+    },
+    "COL (Payout Response)": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/resCreate"
+        },
+        {
+          "required": [
+            "type_of_id",
+            "id",
+            "beneficiary_name",
+            "account_type",
+            "bank_code",
+            "beneficiary_account_number",
+            "site_transaction_id",
+            "amount",
+            "currency"
+          ],
+          "type": "object",
+          "properties": {
+            "transaction_id": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "payout_id": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "status": {
+              "type": "string"
+            },
+            "type_of_id": {
+              "maxLength": 1,
+              "minLength": 1,
+              "type": "string"
+            },
+            "id": {
+              "maxLength": 15,
+              "minLength": 1,
+              "type": "string"
+            },
+            "beneficiary_name": {
+              "maxLength": 30,
+              "minLength": 1,
+              "type": "string"
+            },
+            "account_type": {
+              "maxLength": 2,
+              "minLength": 2,
+              "type": "string"
+            },
+            "bank_code": {
+              "type": "string"
+            },
+            "beneficiary_account_number": {
+              "maxLength": 20,
+              "minLength": 4,
+              "type": "string"
+            },
+            "beneficiary_email": {
+              "type": "string"
+            },
+            "site_transaction_id": {
+              "maxLength": 22,
+              "minLength": 0,
+              "type": "string"
+            },
+            "amount": {
+              "format": "int64",
+              "minimum": 100,
+              "type": "integer"
+            },
+            "payout_date": {
+              "type": "string"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "address": {
+              "maxLength": 100,
+              "minLength": 0,
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "subclient_code": {
+              "type": "string"
+            },
+            "ErrorRow": {
+              "$ref": "#/definitions/SharedModel.Models.General.ErrorModel.Error"
+            }
+          }
+        }
+      ]
+    },
+    "ARG (Update Request)": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/reqUpdate"
+        },
+        {
+          "required": [
+            "transaction_id",
+            "payout_id",
+            "beneficiary_cuit",
+            "beneficiary_name",
+            "bank_account_type",
+            "bank_cbu",
+            "amount",
+            "site_transaction_id",
+            "currency",
+            "subclient_code"
+          ],
+          "type": "object",
+          "properties": {
+            "transaction_id": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "payout_id": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "beneficiary_cuit": {
+              "maxLength": 11,
+              "minLength": 11,
+              "type": "string"
+            },
+            "beneficiary_name": {
+              "maxLength": 60,
+              "minLength": 1,
+              "type": "string"
+            },
+            "bank_account_type": {
+              "maxLength": 1,
+              "minLength": 1,
+              "type": "string"
+            },
+            "bank_cbu": {
+              "maxLength": 22,
+              "minLength": 22,
+              "type": "string"
+            },
+            "amount": {
+              "format": "int64",
+              "maximum": 100000000,
+              "minimum": 100,
+              "type": "integer"
+            },
+            "beneficiary_softd": {
+              "type": "string"
+            },
+            "site_transaction_id": {
+              "maxLength": 22,
+              "minLength": 0,
+              "type": "string"
+            },
+            "concept_code": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "payout_date": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "birth_date": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "annotation": {
+              "type": "string"
+            },
+            "subclient_code": {
+              "maxLength": 60,
+              "minLength": 3,
+              "type": "string"
+            },
+            "ErrorRow": {
+              "$ref": "#/definitions/SharedModel.Models.General.ErrorModel.Error"
+            }
+          }
+        }
+      ]
+    },
+    "COL (Update Request)": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/reqUpdate"
+        },
+        {
+          "required": [
+            "transaction_id",
+            "payout_id",
+            "type_of_id",
+            "id",
+            "beneficiary_name",
+            "account_type",
+            "bank_code",
+            "beneficiary_account_number",
+            "amount",
+            "site_transaction_id",
+            "currency",
+            "subclient_code"
+          ],
+          "type": "object",
+          "properties": {
+            "transaction_id": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "payout_id": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type_of_id": {
+              "maxLength": 1,
+              "minLength": 1,
+              "type": "string"
+            },
+            "id": {
+              "maxLength": 15,
+              "minLength": 1,
+              "type": "string"
+            },
+            "beneficiary_name": {
+              "maxLength": 60,
+              "minLength": 1,
+              "type": "string"
+            },
+            "account_type": {
+              "maxLength": 2,
+              "minLength": 2,
+              "type": "string"
+            },
+            "bank_code": {
+              "type": "string"
+            },
+            "beneficiary_account_number": {
+              "maxLength": 20,
+              "minLength": 4,
+              "type": "string"
+            },
+            "amount": {
+              "format": "int64",
+              "maximum": 100000000,
+              "minimum": 100,
+              "type": "integer"
+            },
+            "beneficiary_softd": {
+              "type": "string"
+            },
+            "site_transaction_id": {
+              "maxLength": 22,
+              "minLength": 0,
+              "type": "string"
+            },
+            "concept_code": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "payout_date": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "birth_date": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "annotation": {
+              "type": "string"
+            },
+            "subclient_code": {
+              "maxLength": 60,
+              "minLength": 3,
+              "type": "string"
+            },
+            "ErrorRow": {
+              "$ref": "#/definitions/SharedModel.Models.General.ErrorModel.Error"
+            }
+          }
+        }
+      ]
+    },
+    "ARG (Update Response)": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/resUpdate"
+        },
+        {
+          "required": [
+            "transaction_id",
+            "payout_id",
+            "beneficiary_cuit",
+            "beneficiary_name",
+            "bank_account_type",
+            "bank_cbu",
+            "amount",
+            "site_transaction_id",
+            "currency",
+            "subclient_code"
+          ],
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "withholding_tax": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "transaction_id": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "payout_id": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "beneficiary_cuit": {
+              "maxLength": 11,
+              "minLength": 11,
+              "type": "string"
+            },
+            "beneficiary_name": {
+              "maxLength": 60,
+              "minLength": 1,
+              "type": "string"
+            },
+            "bank_account_type": {
+              "maxLength": 1,
+              "minLength": 1,
+              "type": "string"
+            },
+            "bank_cbu": {
+              "maxLength": 22,
+              "minLength": 22,
+              "type": "string"
+            },
+            "amount": {
+              "format": "int64",
+              "maximum": 100000000,
+              "minimum": 100,
+              "type": "integer"
+            },
+            "beneficiary_softd": {
+              "type": "string"
+            },
+            "site_transaction_id": {
+              "maxLength": 22,
+              "minLength": 0,
+              "type": "string"
+            },
+            "concept_code": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "payout_date": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "birth_date": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "annotation": {
+              "type": "string"
+            },
+            "subclient_code": {
+              "maxLength": 60,
+              "minLength": 3,
+              "type": "string"
+            },
+            "ErrorRow": {
+              "$ref": "#/definitions/SharedModel.Models.General.ErrorModel.Error"
+            }
+          }
+        }
+      ]
+    },
+    "COL (Update Response)": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/resUpdate"
+        },
+        {
+          "required": [
+            "transaction_id",
+            "payout_id",
+            "type_of_id",
+            "id",
+            "beneficiary_name",
+            "account_type",
+            "bank_code",
+            "beneficiary_account_number",
+            "amount",
+            "site_transaction_id",
+            "currency",
+            "subclient_code"
+          ],
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "withholding_tax": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "transaction_id": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "payout_id": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type_of_id": {
+              "maxLength": 1,
+              "minLength": 1,
+              "type": "string"
+            },
+            "id": {
+              "maxLength": 15,
+              "minLength": 1,
+              "type": "string"
+            },
+            "beneficiary_name": {
+              "maxLength": 60,
+              "minLength": 1,
+              "type": "string"
+            },
+            "account_type": {
+              "maxLength": 2,
+              "minLength": 2,
+              "type": "string"
+            },
+            "bank_code": {
+              "type": "string"
+            },
+            "beneficiary_account_number": {
+              "maxLength": 20,
+              "minLength": 4,
+              "type": "string"
+            },
+            "amount": {
+              "format": "int64",
+              "maximum": 100000000,
+              "minimum": 100,
+              "type": "integer"
+            },
+            "beneficiary_softd": {
+              "type": "string"
+            },
+            "site_transaction_id": {
+              "maxLength": 22,
+              "minLength": 0,
+              "type": "string"
+            },
+            "concept_code": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "payout_date": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "birth_date": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "annotation": {
+              "type": "string"
+            },
+            "subclient_code": {
+              "maxLength": 60,
+              "minLength": 3,
+              "type": "string"
+            },
+            "ErrorRow": {
+              "$ref": "#/definitions/SharedModel.Models.General.ErrorModel.Error"
+            }
+          }
+        }
+      ]
     }
   }
 }
