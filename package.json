@@ -2,7 +2,7 @@
   "name": "local-payment",
   "version": "1.0.0",
   "dependencies": {
-    "swagger-repo": "^2.0.0-rc.15"
+    "swagger-repo": ""
   },
   "private": true,
   "scripts": {
