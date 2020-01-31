@@ -1,6 +1,6 @@
 specFileName: 'C:\Users\pabli\Source\Sanbox\sandboxlp\sandbox\lp2.json'
 apiTitle: Local Payment
-splitSpec: false
+splitSpec: true
 codeSamples: false
 swaggerUI: false
 travis: false

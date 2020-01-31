@@ -2,6 +2,7 @@
   "name": "local-payment",
   "version": "1.0.0",
   "dependencies": {
+    "redoc-cli": "^0.9.5",
     "swagger-repo": ""
   },
   "private": true,

@@ -440,7 +440,6 @@ paths:
           required: true
           schema:
             type: boolean
-      
       responses:
         "200":
           description: OK
@@ -666,7 +665,7 @@ components:
           minimum: 1
           type: integer
         ErrorRow:
-          $ref: '#/components/schemas/SharedModel.Models.General.ErrorModel.Error'
+          $ref: "#/components/schemas/SharedModel.Models.General.ErrorModel.Error"
     SharedModel.Models.Services.Banks.Galicia.PayOut.LotBatch:
       type: object
       properties:
@@ -742,209 +741,144 @@ components:
           type: string
     ARG_(Create_Request):
       required:
-      - beneficiary_cuit
-      - beneficiary_name
-      - bank_account_type
-      - bank_cbu
-      - amount
-      - site_transaction_id
-      - currency
-      - submerchant_code
+        - beneficiary_cuit
+        - beneficiary_name
+        - bank_account_type
+        - bank_cbu
+        - amount
+        - site_transaction_id
+        - currency
+        - subclient_code
       type: object
       properties:
         beneficiary_cuit:
           maxLength: 11
           minLength: 11
-          pattern: '^(\b(20|23|24|27|30|33|34)(\D)?[0-9]{8}(\D)?[0-9])$'
           type: string
         beneficiary_name:
           maxLength: 60
           minLength: 1
-          pattern: '^[a-zA-Z0-9\s]{1,60}$'
           type: string
         bank_account_type:
           maxLength: 1
           minLength: 1
-          pattern: '^[AC]{1}$'
           type: string
         bank_cbu:
           maxLength: 22
           minLength: 22
-          pattern: '^[0-9]{22}$'
           type: string
         amount:
           format: int64
           maximum: 100000000
           minimum: 100
-          pattern: '^[0-9]{3,9}$'
           type: integer
         beneficiary_softd:
           type: string
         site_transaction_id:
           maxLength: 22
           minLength: 0
-          pattern: '^[a-zA-Z0-9\s]{0,22}$'
           type: string
         concept_code:
           format: int32
           type: integer
+        payment_type:
+          type: string
         currency:
-          pattern: '^[ARS|USD|BRL|EUR|UYU|COP|PYG]{3}$'
           type: string
         payout_date:
           type: string
-        email:
-          type: string
-        beneficiary_address:
-          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,150}$'
-          type: string
-        birth_date:
-          pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
-          type: string
-        country:
-          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-          type: string
-        city:
-          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
+        address:
           type: string
         annotation:
-          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,60}$'
           type: string
-        submerchant_code:
+        birth_date:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        email:
+          type: string
+        subclient_code:
           maxLength: 60
           minLength: 3
-          pattern: '^[a-zA-Z0-9\s\-_]{3,60}$'
           type: string
-        sender_name:
-          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-          type: string
-        sender_address:
-          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,150}$'
-          type: string
-        sender_state:
-          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-          type: string
-        sender_country:
-          pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-          type: string
-        sender_taxid:
-          pattern: '^[a-zA-Z0-9\s]{0,22}$'
-          type: string
-        sender_birthdate:
-          pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
-          type: string
-        sender_email:
-          type: string
-        ErrorRow:
-          $ref: '#/components/schemas/SharedModel.Models.General.ErrorModel.Error'
     ARG_(Payout_Response):
-          required:
-            - beneficiary_cuit
-            - beneficiary_name
-            - bank_account_type
-            - bank_cbu
-            - amount
-            - site_transaction_id
-            - currency
-            - submerchant_code
-          type: object
-          properties:
-            transaction_id:
-              format: int64
-              type: integer
-            payout_id:
-              format: int64
-              type: integer
-            status:
-              type: string
-            withholding_tax:
-              format: int64
-              type: integer
-            beneficiary_cuit:
-              maxLength: 11
-              minLength: 11
-              pattern: '^(\b(20|23|24|27|30|33|34)(\D)?[0-9]{8}(\D)?[0-9])$'
-              type: string
-            beneficiary_name:
-              maxLength: 60
-              minLength: 1
-              pattern: '^[a-zA-Z0-9\s]{1,60}$'
-              type: string
-            bank_account_type:
-              maxLength: 1
-              minLength: 1
-              pattern: '^[AC]{1}$'
-              type: string
-            bank_cbu:
-              maxLength: 22
-              minLength: 22
-              pattern: '^[0-9]{22}$'
-              type: string
-            amount:
-              format: int64
-              maximum: 100000000
-              minimum: 100
-              pattern: '^[0-9]{3,9}$'
-              type: integer
-            beneficiary_softd:
-              type: string
-            site_transaction_id:
-              maxLength: 22
-              minLength: 0
-              pattern: '^[a-zA-Z0-9\s]{0,22}$'
-              type: string
-            concept_code:
-              format: int32
-              type: integer
-            currency:
-              pattern: '^[ARS|USD|BRL|EUR|UYU|COP|PYG]{3}$'
-              type: string
-            payout_date:
-              type: string
-            email:
-              type: string
-            beneficiary_address:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,150}$'
-              type: string
-            birth_date:
-              pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
-              type: string
-            country:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-              type: string
-            city:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-              type: string
-            annotation:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,60}$'
-              type: string
-            submerchant_code:
-              maxLength: 60
-              minLength: 3
-              pattern: '^[a-zA-Z0-9\s\-_]{3,60}$'
-              type: string
-            sender_name:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-              type: string
-            sender_address:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,150}$'
-              type: string
-            sender_state:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-              type: string
-            sender_country:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-              type: string
-            sender_taxid:
-              pattern: '^[a-zA-Z0-9\s]{0,22}$'
-              type: string
-            sender_birthdate:
-              pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
-              type: string
-            sender_email:
-              type: string
-            ErrorRow:
-              $ref: '#/components/schemas/SharedModel.Models.General.ErrorModel.Error'
+        required:
+          - beneficiary_cuit
+          - beneficiary_name
+          - bank_account_type
+          - bank_cbu
+          - amount
+          - site_transaction_id
+          - currency
+          - subclient_code
+        type: object
+        properties:
+          transaction_id:
+            format: int64
+            type: integer
+          payout_id:
+            format: int64
+            type: integer
+          status:
+            type: string
+          withholding_tax:
+            format: int64
+            type: integer
+          beneficiary_cuit:
+            maxLength: 11
+            minLength: 11
+            type: string
+          beneficiary_name:
+            maxLength: 60
+            minLength: 1
+            type: string
+          bank_account_type:
+            maxLength: 1
+            minLength: 1
+            type: string
+          bank_cbu:
+            maxLength: 22
+            minLength: 22
+            type: string
+          amount:
+            format: int64
+            maximum: 100000000
+            minimum: 100
+            type: integer
+          beneficiary_softd:
+            type: string
+          site_transaction_id:
+            maxLength: 22
+            minLength: 0
+            type: string
+          concept_code:
+            format: int32
+            type: integer
+          currency:
+            type: string
+          payout_date:
+            type: string
+          email:
+            type: string
+          address:
+            type: string
+          birth_date:
+            type: string
+          country:
+            type: string
+          city:
+            type: string
+          annotation:
+            type: string
+          subclient_code:
+            maxLength: 60
+            minLength: 3
+            type: string
+          ErrorRow:
+            $ref: "#/components/schemas/SharedModel.Models.General.ErrorModel.Err\
+              or"
     ARG_(Update_Request):
           required:
             - transaction_id
@@ -956,102 +890,68 @@ components:
             - amount
             - site_transaction_id
             - currency
-            - submerchant_code
+            - subclient_code
           type: object
           properties:
             transaction_id:
               format: int64
-              pattern: '^[0-9]*$'
               type: integer
             payout_id:
               format: int64
-              pattern: '^[0-9]*$'
               type: integer
             beneficiary_cuit:
               maxLength: 11
               minLength: 11
-              pattern: '^(\b(20|23|24|27|30|33|34)(\D)?[0-9]{8}(\D)?[0-9])$'
               type: string
             beneficiary_name:
               maxLength: 60
               minLength: 1
-              pattern: '^[a-zA-Z0-9\s]{1,60}$'
               type: string
             bank_account_type:
               maxLength: 1
               minLength: 1
-              pattern: '^[AC]{1}$'
               type: string
             bank_cbu:
               maxLength: 22
               minLength: 22
-              pattern: '^[0-9]{22}$'
               type: string
             amount:
               format: int64
               maximum: 100000000
               minimum: 100
-              pattern: '^[0-9]{3,9}$'
               type: integer
             beneficiary_softd:
               type: string
             site_transaction_id:
               maxLength: 22
               minLength: 0
-              pattern: '^[a-zA-Z0-9\s]{0,22}$'
               type: string
             concept_code:
               format: int32
               type: integer
             currency:
-              pattern: '^[ARS|USD|BRL|EUR|UYU|COP|PYG]{3}$'
               type: string
             payout_date:
               type: string
-            beneficiary_email:
+            email:
               type: string
-            beneficiary_address:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,150}$'
+            address:
               type: string
-            beneficiary_birth_date:
-              pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
+            birth_date:
               type: string
-            beneficiary_country:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
+            country:
               type: string
             city:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
               type: string
             annotation:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,60}$'
               type: string
-            submerchant_code:
+            subclient_code:
               maxLength: 60
               minLength: 3
-              pattern: '^[a-zA-Z0-9\s\.-_]{3,60}$'
-              type: string
-            sender_name:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-              type: string
-            sender_address:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,150}$'
-              type: string
-            sender_state:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-              type: string
-            sender_country:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-              type: string
-            sender_taxid:
-              pattern: '^[a-zA-Z0-9\s]{0,22}$'
-              type: string
-            sender_birthdate:
-              pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
-              type: string
-            sender_email:
               type: string
             ErrorRow:
-              $ref: '#/components/schemas/SharedModel.Models.General.ErrorModel.Error'
+              $ref: "#/components/schemas/SharedModel.Models.General.ErrorModel.Err\
+                or"
     ARG_(Update_Response):
           required:
             - transaction_id
@@ -1063,7 +963,7 @@ components:
             - amount
             - site_transaction_id
             - currency
-            - submerchant_code
+            - subclient_code
           type: object
           properties:
             status:
@@ -1073,195 +973,124 @@ components:
               type: integer
             transaction_id:
               format: int64
-              pattern: '^[0-9]*$'
               type: integer
             payout_id:
               format: int64
-              pattern: '^[0-9]*$'
               type: integer
             beneficiary_cuit:
               maxLength: 11
               minLength: 11
-              pattern: '^(\b(20|23|24|27|30|33|34)(\D)?[0-9]{8}(\D)?[0-9])$'
               type: string
             beneficiary_name:
               maxLength: 60
               minLength: 1
-              pattern: '^[a-zA-Z0-9\s]{1,60}$'
               type: string
             bank_account_type:
               maxLength: 1
               minLength: 1
-              pattern: '^[AC]{1}$'
               type: string
             bank_cbu:
               maxLength: 22
               minLength: 22
-              pattern: '^[0-9]{22}$'
               type: string
             amount:
               format: int64
               maximum: 100000000
               minimum: 100
-              pattern: '^[0-9]{3,9}$'
               type: integer
             beneficiary_softd:
               type: string
             site_transaction_id:
               maxLength: 22
               minLength: 0
-              pattern: '^[a-zA-Z0-9\s]{0,22}$'
               type: string
             concept_code:
               format: int32
               type: integer
             currency:
-              pattern: '^[ARS|USD|BRL|EUR|UYU|COP|PYG]{3}$'
               type: string
             payout_date:
               type: string
-            beneficiary_email:
+            email:
               type: string
-            beneficiary_address:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,150}$'
+            address:
               type: string
-            beneficiary_birth_date:
-              pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
+            birth_date:
               type: string
-            beneficiary_country:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
+            country:
               type: string
             city:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
               type: string
             annotation:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,60}$'
               type: string
-            submerchant_code:
+            subclient_code:
               maxLength: 60
               minLength: 3
-              pattern: '^[a-zA-Z0-9\s\.-_]{3,60}$'
-              type: string
-            sender_name:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-              type: string
-            sender_address:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,150}$'
-              type: string
-            sender_state:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-              type: string
-            sender_country:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-              type: string
-            sender_taxid:
-              pattern: '^[a-zA-Z0-9\s]{0,22}$'
-              type: string
-            sender_birthdate:
-              pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
-              type: string
-            sender_email:
               type: string
             ErrorRow:
-              $ref: '#/components/schemas/SharedModel.Models.General.ErrorModel.Error'
+              $ref: "#/components/schemas/SharedModel.Models.General.ErrorModel.Err\
+                or"
     COL_(Create_Request):
-        required:
-          - type_of_id
-          - id
-          - beneficiary_name
-          - account_type
-          - bank_code
-          - beneficiary_account_number
-          - site_transaction_id
-          - amount
-          - currency
-        type: object
-        properties:
-          transaction_id:
-            format: int64
-            type: integer
-          payout_id:
-            format: int64
-            type: integer
-          status:
-            type: string
-          type_of_id:
-            maxLength: 1
-            minLength: 1
-            pattern: '^[1-5]{1}$'
-            type: string
-          id:
-            maxLength: 15
-            minLength: 1
-            pattern: '^[0-9]{1,15}$'
-            type: string
-          beneficiary_name:
-            maxLength: 30
-            minLength: 1
-            pattern: '^[a-zA-Z0-9\s]{1,30}$'
-            type: string
-          account_type:
-            maxLength: 2
-            minLength: 2
-            pattern: '^[27|37]{2}$'
-            type: string
-          bank_code:
-            type: string
-          beneficiary_account_number:
-            maxLength: 20
-            minLength: 4
-            type: string
-          beneficiary_email:
-            type: string
-          site_transaction_id:
-            maxLength: 22
-            minLength: 0
-            pattern: '^[a-zA-Z0-9\s]{0,22}$'
-            type: string
-          amount:
-            format: int64
-            minimum: 100
-            pattern: '^[0-9]{3,14}$'
-            type: integer
-          payout_date:
-            type: string
-          currency:
-            pattern: '^[ARS|USD|BRL|EUR|UYU|COP|PYG]{3}$'
-            type: string
-          address:
-            maxLength: 100
-            minLength: 0
-            type: string
-          country:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,30}$'
-            type: string
-          city:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-            type: string
-          subclient_code:
-            pattern: '^[a-zA-Z0-9\s\-_]{3,60}$'
-            type: string
-          sender_name:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-            type: string
-          sender_address:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-            type: string
-          sender_state:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-            type: string
-          sender_country:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-            type: string
-          sender_taxid:
-            type: string
-          sender_birthdate:
-            pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
-            type: string
-          sender_email:
-            type: string
-          ErrorRow:
-            $ref: '#/components/schemas/SharedModel.Models.General.ErrorModel.Error'
+      required:
+        - type_of_id
+        - id
+        - beneficiary_name
+        - account_type
+        - bank_code
+        - beneficiary_account_number
+        - site_transaction_id
+        - amount
+        - currency
+      type: object
+      properties:
+        amount:
+          format: int64
+          minimum: 100
+          type: integer
+        type_of_id:
+          maxLength: 1
+          minLength: 1
+          type: string
+        id:
+          maxLength: 15
+          minLength: 1
+          type: string
+        beneficiary_name:
+          maxLength: 30
+          minLength: 1
+          type: string
+        account_type:
+          maxLength: 2
+          minLength: 2
+          type: string
+        bank_code:
+          type: string
+        beneficiary_account_number:
+          maxLength: 20
+          minLength: 4
+          type: string
+        beneficiary_email:
+          type: string
+        site_transaction_id:
+          maxLength: 22
+          minLength: 0
+          type: string
+        concept_code:
+          type: string
+        payout_date:
+          type: string
+        currency:
+          type: string
+        address:
+          maxLength: 100
+          minLength: 0
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        subclient_code:
+          type: string
     COL_(Payout_Response):
         required:
           - type_of_id
@@ -1286,22 +1115,18 @@ components:
           type_of_id:
             maxLength: 1
             minLength: 1
-            pattern: '^[1-5]{1}$'
             type: string
           id:
             maxLength: 15
             minLength: 1
-            pattern: '^[0-9]{1,15}$'
             type: string
           beneficiary_name:
             maxLength: 30
             minLength: 1
-            pattern: '^[a-zA-Z0-9\s]{1,30}$'
             type: string
           account_type:
             maxLength: 2
             minLength: 2
-            pattern: '^[27|37]{2}$'
             type: string
           bank_code:
             type: string
@@ -1314,52 +1139,28 @@ components:
           site_transaction_id:
             maxLength: 22
             minLength: 0
-            pattern: '^[a-zA-Z0-9\s]{0,22}$'
             type: string
           amount:
             format: int64
             minimum: 100
-            pattern: '^[0-9]{3,14}$'
             type: integer
           payout_date:
             type: string
           currency:
-            pattern: '^[ARS|USD|BRL|EUR|UYU|COP|PYG]{3}$'
             type: string
           address:
             maxLength: 100
             minLength: 0
             type: string
           country:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,30}$'
             type: string
           city:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
             type: string
           subclient_code:
-            pattern: '^[a-zA-Z0-9\s\-_]{3,60}$'
-            type: string
-          sender_name:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-            type: string
-          sender_address:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-            type: string
-          sender_state:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-            type: string
-          sender_country:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-            type: string
-          sender_taxid:
-            type: string
-          sender_birthdate:
-            pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
-            type: string
-          sender_email:
             type: string
           ErrorRow:
-            $ref: '#/components/schemas/SharedModel.Models.General.ErrorModel.Error'
+            $ref: "#/components/schemas/SharedModel.Models.General.ErrorModel.Err\
+              or"
     COL_(Update_Request):
           required:
             - transaction_id
@@ -1378,31 +1179,25 @@ components:
           properties:
             transaction_id:
               format: int64
-              pattern: '^[0-9]*$'
               type: integer
             payout_id:
               format: int64
-              pattern: '^[0-9]*$'
               type: integer
             type_of_id:
               maxLength: 1
               minLength: 1
-              pattern: '^[1-5]{1}$'
               type: string
             id:
               maxLength: 15
               minLength: 1
-              pattern: '^[0-9]{1,15}$'
               type: string
             beneficiary_name:
               maxLength: 60
               minLength: 1
-              pattern: '^[a-zA-Z0-9\s]{1,60}$'
               type: string
             account_type:
               maxLength: 2
               minLength: 2
-              pattern: '^[27|37]{2}$'
               type: string
             bank_code:
               type: string
@@ -1414,66 +1209,39 @@ components:
               format: int64
               maximum: 100000000
               minimum: 100
-              pattern: '^[0-9]{3,9}$'
               type: integer
             beneficiary_softd:
               type: string
             site_transaction_id:
               maxLength: 22
               minLength: 0
-              pattern: '^[a-zA-Z0-9\s]{0,22}$'
               type: string
             concept_code:
               format: int32
               type: integer
             currency:
-              pattern: '^[ARS|USD|BRL|EUR|UYU|COP|PYG]{3}$'
               type: string
             payout_date:
               type: string
             email:
               type: string
             address:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,150}$'
               type: string
             birth_date:
-              pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
               type: string
             country:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
               type: string
             city:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
               type: string
             annotation:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,60}$'
               type: string
             subclient_code:
               maxLength: 60
               minLength: 3
-              pattern: '^[a-zA-Z0-9\s\.-_]{3,60}$'
-              type: string
-            sender_name:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-              type: string
-            sender_address:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-              type: string
-            sender_state:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-              type: string
-            sender_country:
-              pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-              type: string
-            sender_taxid:
-              type: string
-            sender_birthdate:
-              pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
-              type: string
-            sender_email:
               type: string
             ErrorRow:
-              $ref: '#/components/schemas/SharedModel.Models.General.ErrorModel.Error'
+              $ref: "#/components/schemas/SharedModel.Models.General.ErrorModel.Err\
+                or"
     COL_(Update_Response):
         required:
           - transaction_id
@@ -1497,31 +1265,25 @@ components:
             type: integer
           transaction_id:
             format: int64
-            pattern: '^[0-9]*$'
             type: integer
           payout_id:
             format: int64
-            pattern: '^[0-9]*$'
             type: integer
           type_of_id:
             maxLength: 1
             minLength: 1
-            pattern: '^[1-5]{1}$'
             type: string
           id:
             maxLength: 15
             minLength: 1
-            pattern: '^[0-9]{1,15}$'
             type: string
           beneficiary_name:
             maxLength: 60
             minLength: 1
-            pattern: '^[a-zA-Z0-9\s]{1,60}$'
             type: string
           account_type:
             maxLength: 2
             minLength: 2
-            pattern: '^[27|37]{2}$'
             type: string
           bank_code:
             type: string
@@ -1533,63 +1295,36 @@ components:
             format: int64
             maximum: 100000000
             minimum: 100
-            pattern: '^[0-9]{3,9}$'
             type: integer
           beneficiary_softd:
             type: string
           site_transaction_id:
             maxLength: 22
             minLength: 0
-            pattern: '^[a-zA-Z0-9\s]{0,22}$'
             type: string
           concept_code:
             format: int32
             type: integer
           currency:
-            pattern: '^[ARS|USD|BRL|EUR|UYU|COP|PYG]{3}$'
             type: string
           payout_date:
             type: string
           email:
             type: string
           address:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,150}$'
             type: string
           birth_date:
-            pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
             type: string
           country:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
             type: string
           city:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
             type: string
           annotation:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ0-9\s]{1,60}$'
             type: string
           subclient_code:
             maxLength: 60
             minLength: 3
-            pattern: '^[a-zA-Z0-9\s\.-_]{3,60}$'
-            type: string
-          sender_name:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-            type: string
-          sender_address:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,60}$'
-            type: string
-          sender_state:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-            type: string
-          sender_country:
-            pattern: '^[a-zA-ZáéíóúÁÉÍÓÚ\s]{1,20}$'
-            type: string
-          sender_taxid:
-            type: string
-          sender_birthdate:
-            pattern: '([12]\d{3}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))'
-            type: string
-          sender_email:
             type: string
           ErrorRow:
-            $ref: '#/components/schemas/SharedModel.Models.General.ErrorModel.Error'
+            $ref: "#/components/schemas/SharedModel.Models.General.ErrorModel.Err\
+              or"
